@@ -2,8 +2,8 @@ package app
 
 import (
 	"example.com/golang-gin-auth/config"
-	controller "example.com/golang-gin-auth/internal/controller/http/v1/gin"
-	router "example.com/golang-gin-auth/internal/delivery/http/v1/gin"
+	controller "example.com/golang-gin-auth/internal/controller/http/v1/mux"
+	router "example.com/golang-gin-auth/internal/delivery/http/v1/mux"
 	repository "example.com/golang-gin-auth/internal/repository/postgres"
 	"example.com/golang-gin-auth/internal/service"
 	"example.com/golang-gin-auth/pkg/logger"
@@ -34,7 +34,7 @@ func Run(cfg *config.Config) {
 	store := repository.NewPostgresStore(db)
 	todoService := service.NewTodoService(store)
 
-	todoCtrl := controller.NewTodoCtrl(todoService)
-	delivery := router.NewGinRouter(todoCtrl, l)
+	todoCtrl := controller.NewMuxTodoCtrl(todoService)
+	delivery := router.NewMuxRouter(todoCtrl, l)
 	l.Error(delivery.InitAndServeRoutes(cfg.HTTP.Port))
 }

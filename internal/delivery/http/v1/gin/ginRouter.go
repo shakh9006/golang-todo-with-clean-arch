@@ -2,6 +2,7 @@ package router
 
 import (
 	controller "example.com/golang-gin-auth/internal/controller/http/v1/gin"
+	router "example.com/golang-gin-auth/internal/delivery/http/v1"
 	"example.com/golang-gin-auth/pkg/logger"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -13,7 +14,7 @@ type GinRouter struct {
 	todoCtrl *controller.TodoController
 }
 
-func NewGinRouter(todoCtrl *controller.TodoController, logger *logger.Logger) *GinRouter {
+func NewGinRouter(todoCtrl *controller.TodoController, logger *logger.Logger) router.Router {
 	return &GinRouter{
 		router:   gin.Default(),
 		logger:   logger,
