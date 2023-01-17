@@ -2,14 +2,14 @@ package service
 
 import (
 	entity "example.com/golang-gin-auth/internal/entity/todo"
-	repository "example.com/golang-gin-auth/internal/repository/postgres"
+	repository "example.com/golang-gin-auth/internal/repository"
 )
 
 type TodoService struct {
-	store *repository.PostgresStore
+	store repository.Store
 }
 
-func NewTodoService(store *repository.PostgresStore) *TodoService {
+func NewTodoService(store repository.Store) *TodoService {
 	return &TodoService{
 		store: store,
 	}

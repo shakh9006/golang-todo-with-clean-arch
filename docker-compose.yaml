@@ -11,20 +11,30 @@ services:
       - db
     links:
       - "db:database"
-
-
   db:
-    image: postgres:latest
-    container_name: postgres
+    image: mysql:latest
+    container_name: mysql
     environment:
-      - POSTGRES_USER=${PG_USER}
-      - POSTGRES_PASSWORD=${PG_PASSWORD}
-      - POSTGRES_DB=${PG_DB_NAME}
-      - DATABASE_HOST=${PG_HOST}
-    ports:
-      - "5423:5432"
-    volumes:
-      - database_postgres:/var/lib/postgresql/data
+      - 3306:3306
+      - MYSQL_ROOT_HOST=${MYSQL_DB_HOST}
+      - MYSQL_USER=${MYSQL_DB_USER}
+      - MYSQL_PASSWORD=${MYSQL_DB_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DB_NAME}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_DB_PASSWORD}
+
+#  db:
+#    image: postgres:latest
+#    container_name: postgres
+#    environment:
+#      - POSTGRES_USER=${PG_USER}
+#      - POSTGRES_PASSWORD=${PG_PASSWORD}
+#      - POSTGRES_DB=${PG_DB_NAME}
+#      - DATABASE_HOST=${PG_HOST}
+#    ports:
+#      - "5423:5432"
+#    volumes:
+#      - database_postgres:/var/lib/postgresql/data
+
 
 volumes:
   database_postgres:
