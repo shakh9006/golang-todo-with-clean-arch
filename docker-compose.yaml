@@ -11,20 +11,48 @@ services:
       - db
     links:
       - "db:database"
-
-
   db:
-    image: postgres:latest
-    container_name: postgres
-    environment:
-      - POSTGRES_USER=${PG_USER}
-      - POSTGRES_PASSWORD=${PG_PASSWORD}
-      - POSTGRES_DB=${PG_DB_NAME}
-      - DATABASE_HOST=${PG_HOST}
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: mysql
     ports:
-      - "5423:5432"
+      - "3307:3306"
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DB_NAME}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_DB_PASSWORD}
+      - MYSQL_USER=${MYSQL_DB_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_DB_PASSWORD}
+      - DATABASE_HOST={MYSQL_DB_HOST}
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
     volumes:
-      - database_postgres:/var/lib/postgresql/data
+      - ./data:/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+
+  adminer:
+    image: adminer:latest
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    depends_on:
+      - db
+    ports:
+      - "8085:8080"
+#  db:
+#    image: postgres:latest
+#    container_name: postgres
+#    environment:
+#      - POSTGRES_USER=${PG_USER}
+#      - POSTGRES_PASSWORD=${PG_PASSWORD}
+#      - POSTGRES_DB=${PG_DB_NAME}
+#      - DATABASE_HOST=${PG_HOST}
+#    ports:
+#      - "5423:5432"
+#    volumes:
+#      - database_postgres:/var/lib/postgresql/data
+
 
 volumes:
   database_postgres:
+  database_mysql:

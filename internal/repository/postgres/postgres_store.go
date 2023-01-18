@@ -22,7 +22,7 @@ func (s *PostgresStore) Todo() repository.TodoRepository {
 	return s.todoRepository
 }
 
-func NewPostgresStore(db *sql.DB) *PostgresStore {
+func NewPostgresStore(db *sql.DB) repository.Store {
 	return &PostgresStore{
 		db: db,
 	}
