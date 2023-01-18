@@ -13,15 +13,32 @@ services:
       - "db:database"
   db:
     image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
     container_name: mysql
+    ports:
+      - "3307:3306"
     environment:
-      - 3306:3306
-      - MYSQL_ROOT_HOST=${MYSQL_DB_HOST}
-      - MYSQL_USER=${MYSQL_DB_USER}
-      - MYSQL_PASSWORD=${MYSQL_DB_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DB_NAME}
       - MYSQL_ROOT_PASSWORD=${MYSQL_DB_PASSWORD}
+      - MYSQL_USER=${MYSQL_DB_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_DB_PASSWORD}
+      - DATABASE_HOST={MYSQL_DB_HOST}
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
+    volumes:
+      - ./data:/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
 
+  adminer:
+    image: adminer:latest
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    depends_on:
+      - db
+    ports:
+      - "8085:8080"
 #  db:
 #    image: postgres:latest
 #    container_name: postgres
@@ -38,3 +55,4 @@ services:
 
 volumes:
   database_postgres:
+  database_mysql:

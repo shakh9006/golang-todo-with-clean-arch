@@ -42,7 +42,7 @@ func Run(cfg *config.Config) {
 		l.Fatal("Error loading .env file")
 	}
 
-	db, err := ConnectPgDB()
+	db, err := ConnectMysqlDB()
 	if err != nil {
 		l.Fatal("Database connection err %v: ", err)
 	}
